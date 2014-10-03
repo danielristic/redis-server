@@ -48,7 +48,7 @@ bash 'Removing existing redis-server config file and adding new one' do
 
     maxmemory-samples 10
 EOF
-    chown redis:redis /etc/redis/redis.conf
+    chown -R redis:redis /etc/redis
   EOC
 end
 
