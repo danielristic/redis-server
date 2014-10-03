@@ -6,15 +6,13 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-bash 'Adding Redis PPA and Installing Package' do
-  user 'root'
-  code <<-EOC
-    apt-get install -y python-software-properties
-    add-apt-repository -y ppa:chris-lea/redis-server
-    apt-get update
-    apt-get install -y redis-server
-  EOC
+
+apt_repository 'redis-server' do
+  uri          'ppa:chris-lea/redis-server'
+  distribution node['lsb']['codename']
 end
+
+package "redis-server"
 
 bash 'Removing existing redis-server config file and adding new one' do
   user 'root'
