@@ -6,13 +6,12 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-
 apt_repository 'redis-server' do
-  uri          'ppa:chris-lea/redis-server'
+  uri          node['redis-server']['ppa']
   distribution node['lsb']['codename']
 end
 
-package "redis-server"
+package node['redis-server']['package']
 
 template "/etc/redis/redis.conf" do
   owner "redis"
