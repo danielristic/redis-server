@@ -20,7 +20,7 @@ bash 'Removing existing redis-server config file and adding new one' do
   user 'root'
   code <<-EOC
     rm /etc/redis/redis.conf
-    cat <<EOF > /etc/redis/redis.conf
+    cat > /etc/redis/redis.conf <<EOF
     daemonize yes
     pidfile /var/run/redis/redis-server.pid
     logfile /var/log/redis/redis-server.log
@@ -47,7 +47,7 @@ bash 'Removing existing redis-server config file and adding new one' do
     maxmemory-policy allkeys-lru
 
     maxmemory-samples 10
-    EOF
+EOF
     chown redis:redis /etc/redis/redis.conf
   EOC
 end
