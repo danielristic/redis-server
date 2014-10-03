@@ -1,26 +1,31 @@
-daemonize yes
-pidfile /var/run/redis/redis-server.pid
-logfile /var/log/redis/redis-server.log
+daemonize <%= node['redis-server']['daemonize'] %>
+
+pidfile <%= node['redis-server']['pidfile'] %>
+
+logfile <%= node['redis-server']['logfile'] %>
 
 port <%= node['redis-server']['port'] %>
+
 bind <%= node['redis-server']['bind'] %>
-timeout 300
 
-loglevel notice
+timeout <%= node['redis-server']['timeout'] %>
 
-databases 16
+loglevel <%= node['redis-server']['loglevel'] %>
 
-save 900 1
-save 300 10
-save 60 10000
+databases <%= node['redis-server']['databases'] %>
 
-rdbcompression yes
-dbfilename dump.rdb
+<% node['redis-server']['save'].each do |save_entry| %>
+  <%= "save #{save_entry}" %>
+<% end %>
 
-dir /etc/redis/
-appendonly no
+rdbcompression <%= node['redis-server']['rdbcompression'] %>
 
-maxmemory 419430400
-maxmemory-policy allkeys-lru
+dbfilename <%= node['redis-server']['dbfilename'] %>
 
-maxmemory-samples 10
+dir <%= node['redis-server']['dir'] %>
+
+appendonly <%= node['redis-server']['appendonly'] %>
+
+<% node['redis-server']['additional_configuration_values'].each do |key, value| %>
+  <%= "#{key} #{value}" %>
+<% end %>
