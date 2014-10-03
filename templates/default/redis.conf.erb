@@ -1,0 +1,26 @@
+daemonize yes
+pidfile /var/run/redis/redis-server.pid
+logfile /var/log/redis/redis-server.log
+
+port 6379
+  bind 127.0.0.1
+timeout 300
+
+loglevel notice
+
+databases 16
+
+save 900 1
+save 300 10
+save 60 10000
+
+rdbcompression yes
+dbfilename dump.rdb
+
+dir /etc/redis/
+appendonly no
+
+maxmemory 419430400
+maxmemory-policy allkeys-lru
+
+maxmemory-samples 10

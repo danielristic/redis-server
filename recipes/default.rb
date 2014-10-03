@@ -14,45 +14,21 @@ end
 
 package "redis-server"
 
-bash 'Removing existing redis-server config file and adding new one' do
-  user 'root'
-  code <<-EOC
-    rm /etc/redis/redis.conf
-    cat > /etc/redis/redis.conf <<EOF
-    daemonize yes
-    pidfile /var/run/redis/redis-server.pid
-    logfile /var/log/redis/redis-server.log
-
-    port 6379
-      bind 127.0.0.1
-    timeout 300
-
-    loglevel notice
-
-    databases 16
-
-    save 900 1
-    save 300 10
-    save 60 10000
-
-    rdbcompression yes
-    dbfilename dump.rdb
-
-    dir /etc/redis/
-    appendonly no
-
-    maxmemory 419430400
-    maxmemory-policy allkeys-lru
-
-    maxmemory-samples 10
-EOF
-    chown redis:redis /etc/redis/redis.conf
-  EOC
+template "/etc/redis/redis.conf" do
+  owner "redis"
+  group "redis"
+  mode "0644"
+  source "redis.conf.erb"
+  notifies :run, "execute[restart-redis]", :immediately
 end
 
-bash 'Restarting Redis' do
-  user 'root'
-  code <<-EOC
-    /etc/init.d/redis-server restart
-  EOC
+directory "/etc/redis" do
+  owner 'redis'
+  group 'redis'
+  action :create
+end
+
+execute "restart-redis" do
+  command "/etc/init.d/redis-server restart"
+  action :nothing
 end
