@@ -11,7 +11,7 @@ default['redis-server']['package'] = 'redis-server'
 default['redis-server']['pidfile'] = '/var/run/redis/redis-server.pid'
 default['redis-server']['port'] = '6379'
 default['redis-server']['ppa'] = 'ppa:chris-lea/redis-server'
-default['redis-server']['rdbpcompression'] = 'yes'
+default['redis-server']['rdbcompression'] = 'yes'
 default['redis-server']['save'] = [
   '900 1',
   '300 10',
