@@ -1,46 +1,61 @@
 redis-server Cookbook
 =====================
-TODO: Enter the cookbook description here.
+A Cookbook for managing the installation of Redis, the Open Source Key Value Store (<http://redis.io/>).
 
-e.g.
-This cookbook makes your favorite breakfast sandwich.
 
 Requirements
 ------------
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-e.g.
-#### packages
-- `toaster` - redis-server needs toaster to brown your bagel.
+Ubuntu 12.04 or Higher. Requires the `apt` cookbook for adding PPA's.
 
 Attributes
 ----------
-TODO: List your cookbook attributes here.
+Available attributes and their default values:
 
-e.g.
-#### redis-server::default
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['redis-server']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+```
+default['redis-server']['appendonly'] = 'no'
+default['redis-server']['additional_configuration_values'] = {}
+default['redis-server']['bind'] = '127.0.0.1'
+default['redis-server']['daemonize'] = 'yes'
+default['redis-server']['databases'] = 16
+default['redis-server']['dbfilename'] = 'dump.rdb'
+default['redis-server']['dir'] = '/etc/redis/'
+default['redis-server']['logfile'] = '/var/log/redis/redis-server.log'
+default['redis-server']['loglevel'] = 'notice'
+default['redis-server']['package'] = 'redis-server'
+default['redis-server']['pidfile'] = '/var/run/redis/redis-server.pid'
+default['redis-server']['port'] = '6379'
+default['redis-server']['ppa'] = 'ppa:chris-lea/redis-server'
+default['redis-server']['rdbcompression'] = 'yes'
+default['redis-server']['save'] = [
+  '900 1',
+  '300 10',
+  '60 10000'
+]
+default['redis-server']['timeout'] = 300
+```
+
+There is also an additional attribute `additional_configuration_values` which accepts a hash to allow the addition of arbitrary key value pairs to the configuration file. For example setting `additional_configuration_values` to the following:
+
+```
+{
+  'maxmemory' => 419430400,
+  'maxmemory-policy' => 'allkeys-lru',
+  'maxmemory-samples' => '10'
+}
+```
+
+Would result in the following configuration file entries:
+
+```
+maxmemory 419430400
+maxmemory-policy allkeys-lru
+maxmemory-samples 10
+```
 
 Usage
 -----
 #### redis-server::default
-TODO: Write usage instructions for each cookbook.
-
-e.g.
-Just include `redis-server` in your node's `run_list`:
+Simply include the recipe in the nodes `run_list`.
 
 ```json
 {
@@ -50,19 +65,3 @@ Just include `redis-server` in your node's `run_list`:
   ]
 }
 ```
-
-Contributing
-------------
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
-1. Fork the repository on Github
-2. Create a named feature branch (like `add_component_x`)
-3. Write your change
-4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
-6. Submit a Pull Request using Github
-
-License and Authors
--------------------
-Authors: TODO: List authors
