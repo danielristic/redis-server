@@ -31,3 +31,7 @@ execute "restart-redis" do
   command "/etc/init.d/redis-server restart"
   action :nothing
 end
+
+service 'redis-server' do
+  action :enable
+end
